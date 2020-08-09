@@ -95,7 +95,7 @@ void ABMCharacter::LookUpAtRate(float Rate)
 
 void ABMCharacter::OnFire()
 {
-	UE_LOG(BossMode,Warning,TEXT("Hi"));
+	//UE_LOG(BossMode,Warning,TEXT("Hi"));
 
 	if (ProjectileClass != nullptr)
 	{

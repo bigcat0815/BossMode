@@ -4,6 +4,7 @@
 #include "BM_BTS_ArgoCheck.h"
 #include "BMAIController.h"
 #include "BMBossCharacter.h"
+#include "BMCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "BehaviorTree/Blackboard/BlackboardKeyAllTypes.h"
 #include "BehaviorTree/BehaviorTree.h"
@@ -35,27 +36,52 @@ void UBM_BTS_ArgoCheck::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 	FCollisionObjectQueryParams ObjectQuery(ECC_GameTraceChannel2);
 	FHitResult HitOut(ForceInit);
 
-	DrawDebugSphere(ThisAICharacter->GetWorld(), ThisAICharacter->GetActorLocation(), 1500, 12, FColor::Red, false, 4.0f);
+	TArray<FOverlapResult> OverlapResults;
 
-	bool bResult = ThisAICharacter->GetWorld()->SweepSingleByObjectType(
-		HitOut,
-		ThisAICharacter->GetActorLocation(), 
+	
+
+	bool bResult = ThisAICharacter->GetWorld()->OverlapMultiByChannel(
+		OverlapResults,
+		//ThisAICharacter->GetActorLocation(), 
 		ThisAICharacter->GetActorLocation() + FVector(0.f, 0.f, 10.f),
 		FQuat(), 
-		ObjectQuery,
+		//ObjectQuery,
+		ECollisionChannel::ECC_GameTraceChannel2,
 		FCollisionShape::MakeSphere(1500), 
 		SphereSweepParams);
 
+
+	//TargetÀúÀå
 	if (bResult)
 	{
-		ThisController->GetBlackboardComponent()->SetValueAsObject(TEXT("TargetToFollow"),HitOut.GetActor());
-		ThisController->GetBlackboardComponent()->SetValueAsVector(TEXT("HomeLocation"),ThisAICharacter->GetActorLocation());
-		ThisController->GetBlackboardComponent()->SetValueAsVector(TEXT("TargetLocation"),HitOut.GetActor()->GetActorLocation());
+		for (auto overlapResult : OverlapResults)
+		{
+			//FName bmTags(TEXT("bigcat")); 
+			ABMCharacter* MainCharacter = Cast<ABMCharacter>(overlapResult.GetActor());
+
+			if (MainCharacter && MainCharacter->GetController()->IsPlayerController())
+			{
+				OwnerComp.GetBlackboardComponent()->SetValueAsObject(ABMAIController::TargetKey, MainCharacter);
+				DrawDebugSphere(ThisAICharacter->GetWorld(), ThisAICharacter->GetActorLocation(), 1500, 12, FColor::Green, false, 2.0f);
+				UE_LOG(BossMode, Warning, TEXT("Target Success!!"));
+			}
+		}
 	}
 	else
 	{
-		ThisController->GetBlackboardComponent()->SetValueAsObject(TEXT("TargetToFollow"), nullptr);
-		
+		OwnerComp.GetBlackboardComponent()->SetValueAsObject(ABMAIController::TargetKey, nullptr);
 	}
+	DrawDebugSphere(ThisAICharacter->GetWorld(), ThisAICharacter->GetActorLocation(), 1500, 12, FColor::Red, false, 4.0f);
+	//if (bResult)
+	//{
+	//	ThisController->GetBlackboardComponent()->SetValueAsObject(TEXT("TargetToFollow"),HitOut.GetActor());
+	//	ThisController->GetBlackboardComponent()->SetValueAsVector(TEXT("HomeLocation"),ThisAICharacter->GetActorLocation());
+	//	ThisController->GetBlackboardComponent()->SetValueAsVector(TEXT("TargetLocation"),HitOut.GetActor()->GetActorLocation());
+	//}
+	//else
+	//{
+	//	ThisController->GetBlackboardComponent()->SetValueAsObject(TEXT("TargetToFollow"), nullptr);
+	//	
+	//}
 
 }

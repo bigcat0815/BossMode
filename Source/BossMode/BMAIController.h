@@ -38,7 +38,7 @@ protected:
 public:
 	static const FName HomePosKey;
 	static const FName TargetPosKey;
-//	static const FName TargetKey;
+	static const FName TargetKey;
 
 //private:
 //	void OnRepeatTimer();

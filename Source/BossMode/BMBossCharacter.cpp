@@ -19,6 +19,8 @@ ABMBossCharacter::ABMBossCharacter()
 	//AI
 	AIControllerClass = ABMAIController::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+
+	
 }
 
 // Called when the game starts or when spawned

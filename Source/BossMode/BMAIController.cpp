@@ -9,6 +9,7 @@
 
 const FName ABMAIController::HomePosKey(TEXT("HomePos"));
 const FName ABMAIController::TargetPosKey(TEXT("PatrolPos"));
+const FName ABMAIController::TargetKey(TEXT("Target"));
 
 ABMAIController::ABMAIController()
 {
