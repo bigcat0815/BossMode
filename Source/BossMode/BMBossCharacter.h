@@ -31,7 +31,7 @@ public:
 		AActor* DamageCauser) override;
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = AI)
-	float GetHealth() const;
+	const float GetHealth() const;
 
 	UPROPERTY(EditAnywhere, Category = Pawn)
 	class UBehaviorTree* BehaviorTree;
