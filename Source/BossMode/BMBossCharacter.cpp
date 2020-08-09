@@ -2,6 +2,8 @@
 
 
 #include "BMBossCharacter.h"
+#include "BMAIController.h"
+
 
 // Sets default values
 ABMBossCharacter::ABMBossCharacter()
@@ -13,6 +15,10 @@ ABMBossCharacter::ABMBossCharacter()
 
 	GetMovementComponent()->NavAgentProps.AgentHeight = 320.f;
 	GetMovementComponent()->NavAgentProps.AgentRadius = 160.f;
+
+	//AI
+	AIControllerClass = ABMAIController::StaticClass();
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 }
 
 // Called when the game starts or when spawned

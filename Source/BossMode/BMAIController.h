@@ -17,15 +17,34 @@ class BOSSMODE_API ABMAIController : public AAIController
 public:
 	ABMAIController();
 
-	const UBlackboardComponent* GetBlackBoard() const;
+	//const UBlackboardComponent* GetBlackBoard() const;
 
 	virtual void OnPossess(APawn* InPawn) override;
 
 protected:
-	UPROPERTY(BlueprintReadWrite, Category = Behavior)
-	class UBlackboardComponent* BlackboardComp;
+	//UPROPERTY(BlueprintReadWrite, Category = Behavior)
+	//class UBlackboardComponent* BlackboardComp;
+
+	//UPROPERTY(BlueprintReadWrite, Category = Behavior)
+	//class UBehaviorTreeComponent* BehaviortreeComp;
+
 
 	UPROPERTY(BlueprintReadWrite, Category = Behavior)
-	class UBehaviorTreeComponent* BehaviortreeComp;
+	class UBlackboardData* BlackboardComp;
+
+	UPROPERTY(BlueprintReadWrite, Category = Behavior)
+	class UBehaviorTree* BehaviortreeComp;
+
+public:
+	static const FName HomePosKey;
+	static const FName TargetPosKey;
+//	static const FName TargetKey;
+
+//private:
+//	void OnRepeatTimer();
+//
+//	FTimerHandle RepeatimerHandle;
+//	float RepeatInterval;
+
 
 };
