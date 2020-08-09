@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "BMProjectile.generated.h"
 
+
+
 UCLASS()
 class BOSSMODE_API ABMProjectile : public AActor
 {
@@ -43,4 +45,8 @@ public:
 
 	UFUNCTION()
 	void OnDestoyedProjectile(AActor* DestoyingActor);
+
+	//πÃªÁ¿œ
+	FORCEINLINE class UProjectileMovementComponent* const GetProjectileMovement() const { return ProjMovement; }
+
 };

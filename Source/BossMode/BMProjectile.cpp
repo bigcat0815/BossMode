@@ -48,6 +48,10 @@ ABMProjectile::ABMProjectile()
 	ProjMovement->InitialSpeed = 3000.f;
 	ProjMovement->MaxSpeed = 3000.f;
 	ProjMovement->bRotationFollowsVelocity = true;
+	
+	//미사일관련(추적)
+	ProjMovement->bIsHomingProjectile = true;
+	ProjMovement->HomingAccelerationMagnitude = 10000.f;
 
 //기본 삭제시간
 	InitialLifeSpan = 3.0f;

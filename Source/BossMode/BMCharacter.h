@@ -65,5 +65,10 @@ public:
 protected:
 	void OnFire();
 
+	//ÃßÀû
+protected:
+	USceneComponent* TrackingSceneComponent;
+
+	void OnTrack();
 	
 };

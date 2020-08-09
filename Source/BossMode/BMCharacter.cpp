@@ -2,6 +2,9 @@
 
 
 #include "BMCharacter.h"
+#include "BMProjectile.h"
+#include "Engine.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 
 // Sets default values
 ABMCharacter::ABMCharacter()
@@ -65,6 +68,8 @@ void ABMCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 	PlayerInputComponent->BindAction(TEXT("Fire"), EInputEvent::IE_Pressed, this, &ABMCharacter::OnFire);
 
+	//유도미사일
+	PlayerInputComponent->BindAction(TEXT("Track"), EInputEvent::IE_Pressed, this, &ABMCharacter::OnTrack);
 }
 
 void ABMCharacter::MoveForward(float Val)
@@ -95,14 +100,46 @@ void ABMCharacter::LookUpAtRate(float Rate)
 
 void ABMCharacter::OnFire()
 {
-	//UE_LOG(BossMode,Warning,TEXT("Hi"));
-
 	if (ProjectileClass != nullptr)
 	{
 		if (GetWorld() !=nullptr)
 		{
-			GetWorld()->SpawnActor<ABMProjectile>(ProjectileClass, ProjSpawn->GetComponentLocation(), ProjSpawn->GetComponentRotation());
+			
+			ABMProjectile* ThisProjectile = GetWorld()->SpawnActor<ABMProjectile>(ProjectileClass,
+				ProjSpawn->GetComponentLocation(), ProjSpawn->GetComponentRotation());
+			ThisProjectile->GetProjectileMovement()->HomingTargetComponent = TrackingSceneComponent;
 		}
+	}
+}
+
+void ABMCharacter::OnTrack()
+{
+	FVector MousePos;
+	FVector MouseDir;
+	FHitResult Hit;
+	FCollisionObjectQueryParams ObjectQueryParms;
+	ObjectQueryParms.AddObjectTypesToQuery(ECC_GameTraceChannel3);
+	APlayerController* PlayerController = Cast<APlayerController>(GetController());
+	
+	if (GEngine->GameViewport != nullptr && PlayerController != nullptr)
+	{
+		FVector2D ScreenPos = GEngine->GameViewport->Viewport->GetSizeXY();
+		
+		PlayerController->DeprojectScreenPositionToWorld(ScreenPos.X / 2.0f, ScreenPos.Y / 2.0f, MousePos, MouseDir);
+		MouseDir *= 100000.f;
+
+		GetWorld()->LineTraceSingleByObjectType(Hit, MousePos, MouseDir, ObjectQueryParms);
+	}
+
+	if (Hit.bBlockingHit)
+	{
+		UE_LOG(BossMode, Warning, TEXT("Trace Hit Whit %s"), *(Hit.GetActor()->GetName()));
+		TrackingSceneComponent = Cast<USceneComponent>(Hit.GetActor()->GetComponentByClass(USceneComponent::StaticClass()));
+	}
+	else
+	{
+		UE_LOG(BossMode, Warning, TEXT("No Trace"));
+		TrackingSceneComponent = nullptr;
 	}
 }
 
