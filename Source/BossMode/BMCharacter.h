@@ -3,6 +3,7 @@
 #pragma once
 
 #include "BossMode.h"
+#include "BMProjectile.h"
 #include "GameFramework/Character.h"
 #include "BMCharacter.generated.h"
 
@@ -51,5 +52,18 @@ protected:
 	void MoveRight(float Val);
 	void TurnAtRate(float Rate);
 	void LookUpAtRate(float Rate);
+	
+
+	//πﬂªÁ√º
+public:
+	UPROPERTY(EditDefaultsOnly, Category = Projectile)
+	TSubclassOf<ABMProjectile> ProjectileClass;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, category = Projectile)
+	class USceneComponent* ProjSpawn;
+
+protected:
+	void OnFire();
+
 	
 };

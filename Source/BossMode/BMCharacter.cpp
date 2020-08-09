@@ -29,6 +29,10 @@ ABMCharacter::ABMCharacter()
 	FPGunMesh->bCastDynamicShadow = false;
 	FPGunMesh->CastShadow = false;
 	FPGunMesh->AttachTo(FPMesh, TEXT("GripPoint"), EAttachLocation::SnapToTargetIncludingScale, true);
+
+	//πﬂªÁ√º
+	ProjSpawn = CreateDefaultSubobject<USceneComponent>(TEXT("ProjectileSpawn"));
+	ProjSpawn->SetupAttachment(FPGunMesh);
 }
 
 // Called when the game starts or when spawned
@@ -59,6 +63,8 @@ void ABMCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAction(TEXT("Jump"), EInputEvent::IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction(TEXT("Jump"), EInputEvent::IE_Released, this, &ACharacter::StopJumping);
 
+	PlayerInputComponent->BindAction(TEXT("Fire"), EInputEvent::IE_Pressed, this, &ABMCharacter::OnFire);
+
 }
 
 void ABMCharacter::MoveForward(float Val)
@@ -85,5 +91,18 @@ void ABMCharacter::TurnAtRate(float Rate)
 void ABMCharacter::LookUpAtRate(float Rate)
 {
 	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
+}
+
+void ABMCharacter::OnFire()
+{
+	UE_LOG(BossMode,Warning,TEXT("Hi"));
+
+	if (ProjectileClass != nullptr)
+	{
+		if (GetWorld() !=nullptr)
+		{
+			GetWorld()->SpawnActor<ABMProjectile>(ProjectileClass, ProjSpawn->GetComponentLocation(), ProjSpawn->GetComponentRotation());
+		}
+	}
 }
 

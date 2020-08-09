@@ -7,9 +7,9 @@
 
 ABMGameMode::ABMGameMode()
 {
-	/*static ConstructorHelpers::FClassFinder<APawn>PlayerPawnClassFinder(TEXT("/Game/FirstPersonBP/Blueprints/FirstPersonCharacter.FirstPersonCharacter_C"));
-	DefaultPawnClass = PlayerPawnClassFinder.Class;*/
+	static ConstructorHelpers::FClassFinder<APawn>PlayerPawnClassFinder(TEXT("/Game/BB/FPPCharacter.FPPCharacter_C"));
+	DefaultPawnClass = PlayerPawnClassFinder.Class;
 
-	DefaultPawnClass = ABMCharacter::StaticClass();
+	//DefaultPawnClass = ABMCharacter::StaticClass();
 	HUDClass = ABMHUD::StaticClass();
 }

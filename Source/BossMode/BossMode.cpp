@@ -3,4 +3,5 @@
 #include "BossMode.h"
 #include "Modules/ModuleManager.h"
 
+DEFINE_LOG_CATEGORY(BossMode);
 IMPLEMENT_PRIMARY_GAME_MODULE( FDefaultGameModuleImpl, BossMode, "BossMode" );
