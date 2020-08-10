@@ -44,6 +44,17 @@ ABMProjectile::ABMProjectile()
 		ProjParticle->SetTemplate(PS_Effect.Object);
 	}
 
+	PS_Smork = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Ps_smork"));
+	PS_Smork->SetupAttachment(ProjeCollision);
+	static ConstructorHelpers::FObjectFinder<UParticleSystem> PS_sm(
+		TEXT("/Game/TS_Fireworks/Particles/PS_TS_FireworksShell_Palm.PS_TS_FireworksShell_Palm"));
+	if (PS_sm.Succeeded())
+	{
+		PS_Smork->SetTemplate(PS_sm.Object);
+		PS_Smork->SetRelativeLocation(FVector(0.0f, -20.0f, 0.0f));
+	}
+
+
 //movement
 	ProjMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjMovementComp"));
 	ProjMovement->UpdatedComponent = ProjeCollision;
@@ -55,8 +66,11 @@ ABMProjectile::ABMProjectile()
 	ProjMovement->bIsHomingProjectile = true;
 	ProjMovement->HomingAccelerationMagnitude = 10000.f;
 
+
+
+
 //기본 삭제시간
-	InitialLifeSpan = 3.0f;
+	InitialLifeSpan = 1.0f;
 
 }
 
@@ -93,6 +107,9 @@ void ABMProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor,
 
 		ProjParticle->Activate();
 		ProjParticle->DetachFromParent(true);
+
+		PS_Smork->bAutoDestroy = true;
+		PS_Smork->DetachFromParent(true);
 	}
 }
 
