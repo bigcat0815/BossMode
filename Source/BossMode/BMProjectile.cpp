@@ -4,6 +4,8 @@
 #include "BMProjectile.h"
 //#include "Components/ShapeComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "BMBossCharacter.h"
+#include "GameFramework/DamageType.h"
 
 // Sets default values
 ABMProjectile::ABMProjectile()
@@ -74,6 +76,13 @@ void ABMProjectile::Tick(float DeltaTime)
 
 void ABMProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* otherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
+	if (OtherActor->GetClass()->IsChildOf(ABMBossCharacter::StaticClass()))
+	{
+		FDamageEvent DamageEvent(UDamageType::StaticClass());
+		OtherActor->TakeDamage(10.f, DamageEvent, GetWorld()->GetFirstPlayerController(), this);
+		UE_LOG(BossMode, Warning, TEXT("health : 10"));
+	}
+
 	if (!OtherActor->GetClass()->IsChildOf(this->StaticClass()))
 	{
 		ProjeCollision->SetCollisionProfileName(TEXT("NoCollision"));
@@ -83,7 +92,6 @@ void ABMProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPri
 
 		ProjParticle->Activate();
 		ProjParticle->DetachFromParent(true);
-
 	}
 }
 
