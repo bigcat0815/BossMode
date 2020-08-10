@@ -71,4 +71,8 @@ protected:
 
 	void OnTrack();
 	
+	//다량미사일
+public:
+	UFUNCTION(BlueprintCallable, Category = Missile)
+	void FireMissles();
 };

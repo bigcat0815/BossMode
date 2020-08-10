@@ -66,7 +66,7 @@ void ABMCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAction(TEXT("Jump"), EInputEvent::IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction(TEXT("Jump"), EInputEvent::IE_Released, this, &ACharacter::StopJumping);
 
-	PlayerInputComponent->BindAction(TEXT("Fire"), EInputEvent::IE_Pressed, this, &ABMCharacter::OnFire);
+	PlayerInputComponent->BindAction(TEXT("Fire"), EInputEvent::IE_Pressed, this, &ABMCharacter::FireMissles);
 
 	//유도미사일
 	PlayerInputComponent->BindAction(TEXT("Track"), EInputEvent::IE_Pressed, this, &ABMCharacter::OnTrack);
@@ -140,6 +140,33 @@ void ABMCharacter::OnTrack()
 	{
 		UE_LOG(BossMode, Warning, TEXT("No Trace"));
 		TrackingSceneComponent = nullptr;
+	}
+}
+
+void ABMCharacter::FireMissles()
+{
+	if (ProjectileClass != nullptr)
+	{
+		if (GetWorld() != nullptr)
+		{
+			for (int i = 1; i <= 5; ++i)
+			{
+				float fAngle = 16 + i * 26;
+				FVector circlePoint;
+				circlePoint.X = (FMath::Cos((fAngle * PI / 180.f)));
+				circlePoint.Y = (FMath::Cos(PI / 2) * (FMath::Sin(fAngle * PI / 180.f)));
+				circlePoint.Z = (FMath::Sin(PI / 2) * (FMath::Sin(fAngle * PI / 180.f)));
+
+				FRotator charRot = GetActorRotation();
+				charRot.Yaw = charRot.Yaw + 90.f;
+				circlePoint = charRot.RotateVector(circlePoint);
+
+
+				ABMProjectile* ThisProjectile = GetWorld()->SpawnActor<ABMProjectile>(ProjectileClass,
+					ProjSpawn->GetComponentLocation() + circlePoint * 180.f, ProjSpawn->GetComponentRotation());
+				ThisProjectile->GetProjectileMovement()->HomingTargetComponent = TrackingSceneComponent;
+			}
+		}
 	}
 }
 

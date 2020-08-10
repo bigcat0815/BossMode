@@ -28,13 +28,13 @@ ABMAIController::ABMAIController()
 		BehaviortreeComp = BTObject.Object;
 	}
 
+	//EBossState::BS_FOLLOW;
 
+	//BBcomp = CreateDefaultSubobject<UBlackboardComponent>(TEXT("BBoardComp"));
+	//check(BBcomp);
 
-	/*BlackboardComp = CreateDefaultSubobject<UBlackboardComponent>(TEXT("BlackBoardComp"));
-	check(BlackboardComp);
-
-	BehaviortreeComp = CreateDefaultSubobject<UBehaviorTreeComponent>(TEXT("BehaviorComp"));
-	check(BehaviortreeComp);*/
+	//BehaviortreeComp = CreateDefaultSubobject<UBehaviorTreeComponent>(TEXT("BehaviorComp"));
+	//check(BehaviortreeComp);
 
 }
 
@@ -50,6 +50,8 @@ void ABMAIController::OnPossess(APawn* InPawn)
 	if (UseBlackboard(BlackboardComp, Blackboard))
 	{
 		Blackboard->SetValueAsVector(HomePosKey, InPawn->GetActorLocation());
+		
+		//BossStateBlackboardKey = BBcomp->GetKeyID("BossState");
 		if (!RunBehaviorTree(BehaviortreeComp))
 		{
 			UE_LOG(BossMode,Error, TEXT("AIController, can't run Behavior Tree!"));
@@ -64,6 +66,24 @@ void ABMAIController::OnPossess(APawn* InPawn)
 		BlackboardComp->InitializeBlackboard(*(possessedPawn->BehaviorTree->BlackboardAsset));
 		BehaviortreeComp->StartTree(*(possessedPawn->BehaviorTree));
 	}*/
+}
+
+void ABMAIController::Tick(float DeltaTime)
+{
+	//EBossState bossState;
+	//if (ControlledChar->GetHealth() > 66.0f)
+	//{
+	//	bossState = EBossState::BS_FOLLOW;
+	//}
+	//else if(ControlledChar->GetHealth() > 33.0f)
+	//{
+	//	bossState = EBossState::BS_TURRET;
+	//}
+	//else
+	//{
+	//	bossState = EBossState::BS_FINAL;
+	//}
+	//BBcomp->SetValue<UBlackboardKeyType_Enum>(BossStateBlackboardKey, (uint8)bossState);
 }
 
 //void ABMAIController::OnRepeatTimer()

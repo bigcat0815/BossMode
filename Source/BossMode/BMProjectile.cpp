@@ -74,7 +74,8 @@ void ABMProjectile::Tick(float DeltaTime)
 
 }
 
-void ABMProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* otherComp, FVector NormalImpulse, const FHitResult& Hit)
+void ABMProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, 
+	UPrimitiveComponent* otherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	if (OtherActor->GetClass()->IsChildOf(ABMBossCharacter::StaticClass()))
 	{
